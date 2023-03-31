@@ -16,4 +16,3 @@ export class CreateUserDto {
     @ApiPropertyOptional()
     phoneNumber: string
 }
- 

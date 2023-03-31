@@ -3,9 +3,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors:true});
+  const app = await NestFactory.create(AppModule, { cors: true });
   const config = new DocumentBuilder()
-    .setTitle('Final project\'s back-end API')
+    .setTitle("Final project's back-end API")
     .setDescription('The back-end API for final-project')
     .setVersion('1.0')
     .build();

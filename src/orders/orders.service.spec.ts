@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { Users } from './entities/users.entity';
+import { OrdersService } from './orders.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Orders } from './entities/orders.entity';
 
-describe('UsersService', () => {
-  let service: UsersService;
+describe('OrdersService', () => {
+  let service: OrdersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService, { provide: getRepositoryToken(Users), useValue: {} }],
+      providers: [OrdersService, { provide: getRepositoryToken(Orders), useValue: {} }],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    service = module.get<OrdersService>(OrdersService);
   });
 
   it('should be defined', () => {

@@ -21,11 +21,17 @@ import { Payments } from './payments/entities/payments.entity';
 import { PaymentsController } from './payments/payments.controller';
 import { PaymentsService } from './payments/payments.service';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
     }),
     UsersModule,
     TypeOrmModule.forRoot({
@@ -44,6 +50,9 @@ import { ConfigModule } from '@nestjs/config';
     PaymentsModule,
   ],
   controllers: [AppController, UsersController, AuthController, ProductsController, OrdersController, PaymentsController],
-  providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService],
+  providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard,
+  },],
 })
 export class AppModule { }

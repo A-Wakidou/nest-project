@@ -11,7 +11,6 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @UseGuards(LocalAuthGuard)
-    // @UseGuards(JwtAuthGuard)
     @Post('auth/login')
     async login(@Body() loginDto: LoginDto) {
         return this.authService.login(loginDto);

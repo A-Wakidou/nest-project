@@ -20,16 +20,20 @@ import { PaymentsModule } from './payments/payments.module';
 import { Payments } from './payments/entities/payments.entity';
 import { PaymentsController } from './payments/payments.controller';
 import { PaymentsService } from './payments/payments.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'root',
-      password: '',
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
       database: 'nest-project',
       entities: [Users, Products, Orders, Payments],
       synchronize: true,

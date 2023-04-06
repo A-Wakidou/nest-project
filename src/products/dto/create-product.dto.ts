@@ -6,6 +6,8 @@ export class CreateProductDto {
     @ApiPropertyOptional()
     brand: string;
     @ApiPropertyOptional()
+    category: string;
+    @ApiPropertyOptional()
     description: string;
     @ApiProperty()
     price: number;

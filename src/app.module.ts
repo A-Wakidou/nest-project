@@ -20,6 +20,10 @@ import { PaymentsModule } from './payments/payments.module';
 import { Payments } from './payments/entities/payments.entity';
 import { PaymentsController } from './payments/payments.controller';
 import { PaymentsService } from './payments/payments.service';
+import { CategoriesModule } from './categories/categories.module';
+import { CategoriesService } from './categories/categories.service';
+import { CategoriesController } from './categories/categories.controller';
+import { Categories } from './categories/entities/categories.entity';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -41,16 +45,17 @@ import { APP_GUARD } from '@nestjs/core';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'nest-project',
-      entities: [Users, Products, Orders, Payments],
+      entities: [Users, Products, Orders, Payments, Categories],
       synchronize: true,
     }),
     AuthModule,
     ProductsModule,
     OrdersModule,
     PaymentsModule,
+    CategoriesModule,
   ],
-  controllers: [AppController, UsersController, AuthController, ProductsController, OrdersController, PaymentsController],
-  providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService, {
+  controllers: [AppController, UsersController, AuthController, ProductsController, OrdersController, PaymentsController, CategoriesController],
+  providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService, CategoriesService, {
     provide: APP_GUARD,
     useClass: ThrottlerGuard,
   },],

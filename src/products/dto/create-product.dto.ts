@@ -3,10 +3,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class CreateProductDto {
     @ApiProperty()
     title: string;
+    @ApiProperty()
+    image: string;
     @ApiPropertyOptional()
     brand: string;
     @ApiPropertyOptional()
-    category: string;
+    categories: [];
     @ApiPropertyOptional()
     description: string;
     @ApiProperty()

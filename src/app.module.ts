@@ -27,6 +27,7 @@ import { Categories } from './categories/entities/categories.entity';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { APP_GUARD } from '@nestjs/core';
     OrdersModule,
     PaymentsModule,
     CategoriesModule,
+    StripeModule,
   ],
   controllers: [AppController, UsersController, AuthController, ProductsController, OrdersController, PaymentsController, CategoriesController],
   providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService, CategoriesService, {

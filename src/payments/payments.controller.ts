@@ -59,4 +59,5 @@ export class PaymentsController {
   remove(@Param('id') id: string) {
     return this.paymentsService.remove(+id)
   }
+
 }

@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Orders } from 'src/orders/entities/orders.entity';
 import { CreatePaymentDto } from 'src/payments/dto/create-payment.dto';
 const stripe = require('stripe')('sk_test_51MvGYhD5txrJIMcUNsfwDPwqpMhDCsVkJpDcj8jy2Ou9txKmmjc9O4WBolgrquEAZo1WGzUFlKpTCqiUf5TR07hP00IENBZSTv');
-const stripeEndpointSecret = 'whsec_c2c95ace2be8835d4ef20c8a0a0a283e6451a018f650934fdb405fdeb9e4e48b'
 
 @ApiTags('stripe')
 @Controller('stripe')
@@ -39,7 +38,7 @@ export class StripeController {
     const sig = request.headers['stripe-signature']
     let event
     try {
-      event = stripe.webhooks.constructEvent(payload, sig, stripeEndpointSecret);
+      event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_ENDPOINT_SECRET);
     } catch (err) {
       console.log(err)
       return `Webhook Error: ${err.message}`;

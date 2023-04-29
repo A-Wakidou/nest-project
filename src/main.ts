@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, { cors: true, bodyParser: false });
   app.use(helmet());
   const config = new DocumentBuilder()
     .setTitle("Final project's back-end API")

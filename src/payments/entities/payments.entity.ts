@@ -1,18 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { Users } from '../../users/entities/users.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Payments {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne((type) => Users, (users) => users.id, {
-        cascade: true,
-    })
-    user: Users
+    @Column()
+    paymentIntentId: string
 
     @Column()
     amount: number;
+
+    @Column()
+    method: string
 
     @CreateDateColumn()
     createdDate: Date

@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Users } from '../../users/entities/users.entity';
 
 export class CreatePaymentDto {
     @ApiProperty()
-    userId: Users;
+    paymentIntentId: string
     @ApiProperty()
     amount: number;
+    @ApiProperty()
+    method: string;
 }

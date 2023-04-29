@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersController } from './users/users.controller';
@@ -28,6 +28,12 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { StripeModule } from './stripe/stripe.module';
+import { RawBodyMiddleware } from './middlewares/raw-body.middleware';
+import { JsonBodyMiddleware } from './middlewares/json-body.middleware';
+import { ProductsImagesModule } from './products_images/products_images.module';
+import { ProductsImagesController } from './products_images/products_images.controller';
+import { ProductsImagesService } from './products_images/products_images.service';
+import { ProductsImages } from './products_images/entities/products_images.entity';
 
 @Module({
   imports: [
@@ -46,7 +52,7 @@ import { StripeModule } from './stripe/stripe.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'nest-project',
-      entities: [Users, Products, Orders, Payments, Categories],
+      entities: [Users, Products, ProductsImages, Orders, Payments, Categories],
       synchronize: true,
     }),
     AuthModule,
@@ -55,11 +61,23 @@ import { StripeModule } from './stripe/stripe.module';
     PaymentsModule,
     CategoriesModule,
     StripeModule,
+    ProductsImagesModule,
   ],
-  controllers: [AppController, UsersController, AuthController, ProductsController, OrdersController, PaymentsController, CategoriesController],
-  providers: [AppService, UsersService, ProductsService, OrdersService, PaymentsService, CategoriesService, {
+  controllers: [AppController, UsersController, AuthController, ProductsController, ProductsImagesController, OrdersController, PaymentsController, CategoriesController],
+  providers: [AppService, UsersService, ProductsService, ProductsImagesService, OrdersService, PaymentsService, CategoriesService, {
     provide: APP_GUARD,
     useClass: ThrottlerGuard,
-  },],
+  },]
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(RawBodyMiddleware)
+      .forRoutes({
+        path: '/stripe/webhook',
+        method: RequestMethod.POST,
+      })
+      .apply(JsonBodyMiddleware)
+      .forRoutes('*');
+  }
+}

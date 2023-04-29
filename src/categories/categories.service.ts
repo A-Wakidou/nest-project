@@ -22,23 +22,19 @@ export class CategoriesService {
     return await this.categoriesRepository.find();
   }
 
-  async findOne(payload: object): Promise<Categories> {
-    return await this.categoriesRepository.findOneBy(payload);
+  async findOne(id: object): Promise<Categories> {
+    return await this.categoriesRepository.findOneBy(id);
   }
 
 
   async update(id: number, payload: UpdateCategoryDto): Promise<Categories> {
-    const categoryToUpdate = await this.categoriesRepository.findOneBy({
-      id: 1,
-    })
+    const categoryToUpdate = await this.categoriesRepository.findOneBy({ id })
     categoryToUpdate.name = payload.name
     return await this.categoriesRepository.save(categoryToUpdate);
   }
 
   async remove(id: number): Promise<Categories> {
-    const categoryToRemove = await this.categoriesRepository.findOneBy({
-      id: 1,
-    })
+    const categoryToRemove = await this.categoriesRepository.findOneBy({ id })
     return await this.categoriesRepository.remove(categoryToRemove)
   }
 

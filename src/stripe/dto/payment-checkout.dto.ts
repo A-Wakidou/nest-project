@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PaymentCheckOutDto {
+export class PaymentCheckOutDto extends Array {
     @ApiProperty()
-    price: number;
+    productName: string;
     @ApiProperty()
     quantity: number;
 } []

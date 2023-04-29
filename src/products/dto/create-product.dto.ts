@@ -1,10 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ProductsImages } from 'src/products_images/entities/products_images.entity';
 
 export class CreateProductDto {
     @ApiProperty()
     title: string;
     @ApiProperty()
-    image: string;
+    images: ProductsImages[];
     @ApiPropertyOptional()
     brand: string;
     @ApiPropertyOptional()

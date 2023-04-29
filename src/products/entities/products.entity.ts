@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Categories } from '../../categories/entities/categories.entity'
+import { Orders } from '../../orders/entities/orders.entity';
+import { ProductsImages } from '../../products_images/entities/products_images.entity';
 
 @Entity()
 export class Products {
@@ -9,8 +11,8 @@ export class Products {
     @Column()
     title: string;
 
-    @Column()
-    image: string
+    @OneToMany(() => ProductsImages, (productsImages) => productsImages.productId, { eager: true, })
+    images: ProductsImages[]
 
     @Column()
     brand: string;
@@ -18,6 +20,9 @@ export class Products {
     @ManyToMany(() => Categories, (category) => category.products, { eager: true, })
     @JoinTable({ name: "products_categories" })
     categories: Categories[]
+
+    @ManyToMany(() => Orders, (orders) => orders.products)
+    order: Orders[]
 
     @Column()
     description: string;

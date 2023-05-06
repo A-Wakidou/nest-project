@@ -18,6 +18,9 @@ export class StripeService {
     })
     const session = await stripe.checkout.sessions.create({
       line_items: line_items,
+      invoice_creation: {
+        enabled: true,
+      },
       mode: 'payment',
       success_url: `${process.env.SERVER_HOST}/payments/payment_success`,
       cancel_url: `${process.env.SERVER_HOST}/payments/payment_cancel`,

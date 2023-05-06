@@ -4,8 +4,6 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { StripeService } from '../stripe/stripe.service';
-import { PurchaseDto } from './dto/purchase.dto';
 
 @ApiTags('payments')
 @Controller('payments')
@@ -61,17 +59,6 @@ export class PaymentsController {
   remove(@Param('id') id: number) {
     return this.paymentsService.remove(id)
   }
-
-  // @ApiHeader({
-  //   name: 'Authorization',
-  //   description: 'JWT Token',
-  // })
-  // @UseGuards(JwtAuthGuard)
-  // @Post('/purchase')
-  // purchase(@Body() purchaseDto: PurchaseDto) {
-  //   this.stripeService.checkout(purchaseDto.stripePaymentCheckoutData) // PRODUCTNAME AND QUANTITY
-  //   // return this.paymentsService.create(purchaseDto.paymentData); // AMOUNT AND METHOD
-  // }
 
   @Get('payment-cancel')
   @Redirect(process.env.CLIENT_HOST + '/cart', 301)

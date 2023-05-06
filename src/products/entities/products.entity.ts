@@ -8,6 +8,9 @@ export class Products {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ unique: true })
+    stripeId: string;
+
     @Column()
     title: string;
 

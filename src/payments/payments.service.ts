@@ -12,12 +12,12 @@ export class PaymentsService {
     private paymentsRepository: Repository<Payments>,
   ) { }
 
-  create(payload: CreatePaymentDto): Promise<Payments> {
+  async create(payload: CreatePaymentDto): Promise<Payments> {
     const payment = new Payments()
     payment.paymentIntentId = payload.paymentIntentId
     payment.amount = payload.amount
     payment.method = payload.method
-    return this.paymentsRepository.save(payment)
+    return await this.paymentsRepository.save(payment)
   }
 
   async findAll(): Promise<Payments[]> {

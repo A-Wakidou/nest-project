@@ -20,6 +20,7 @@ export class ProductsService {
 
   async create(payload: CreateProductDto): Promise<Products> {
     const product = new Products()
+    product.stripeId = payload.stripeId
     product.title = payload.title
     const images = []
     payload.images.forEach(async (element) => {
@@ -51,6 +52,7 @@ export class ProductsService {
 
   async update(id: number, payload: UpdateProductDto): Promise<Products> {
     const productToUpdate = await this.productsRepository.findOneBy({ id })
+    productToUpdate.stripeId = payload.stripeId
     productToUpdate.title = payload.title
     const images = []
     payload.images.forEach(async (element) => {

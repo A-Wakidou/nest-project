@@ -8,7 +8,7 @@ async function bootstrap() {
   app.use(helmet());
   const config = new DocumentBuilder()
     .setTitle("Final project's back-end API")
-    .setDescription('The back-end API for final-project')
+    .setDescription('Back-end API for final-project')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

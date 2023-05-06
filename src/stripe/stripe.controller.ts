@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Redirect, UseGuards, Req } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { PaymentsService } from '../payments/payments.service';
-import { Payments } from '../payments/entities/payments.entity';
+import { OrdersService } from '../orders/orders.service';
 import { CreateStripeProductDto } from './dto/create-stripe-product.dto';
 import { UpdateStripeProductDto } from './dto/update-stripe-product.dto';
 import { PaymentCheckOutDto } from './dto/payment-checkout.dto';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Orders } from 'src/orders/entities/orders.entity';
-import { CreatePaymentDto } from 'src/payments/dto/create-payment.dto';
+import { CreatePaymentDto } from '../payments/dto/create-payment.dto';
+import { CreateOrderDto } from '../orders/dto/create-order.dto';
+import { UsersService } from '../users/users.service';
+import { ProductsService } from '../products/products.service';
 const stripe = require('stripe')('sk_test_51MvGYhD5txrJIMcUNsfwDPwqpMhDCsVkJpDcj8jy2Ou9txKmmjc9O4WBolgrquEAZo1WGzUFlKpTCqiUf5TR07hP00IENBZSTv');
 
 @ApiTags('stripe')
@@ -17,8 +18,10 @@ const stripe = require('stripe')('sk_test_51MvGYhD5txrJIMcUNsfwDPwqpMhDCsVkJpDcj
 export class StripeController {
   constructor(
     private readonly stripeService: StripeService,
-    @InjectRepository(Payments)
-    private readonly paymentsService: PaymentsService) { }
+    private readonly paymentsService: PaymentsService,
+    private readonly ordersService: OrdersService,
+    private readonly usersService: UsersService,
+    private readonly productsService: ProductsService) { }
 
   @ApiHeader({
     name: 'Authorization',
@@ -47,7 +50,6 @@ export class StripeController {
     switch (event.type) {
       case 'checkout.session.completed':
         const checkoutSessionCompleted = event.data.object;
-        // this.orderService.create()
         if (checkoutSessionCompleted.payment_status === 'paid') {
           const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
             checkoutSessionCompleted.id,
@@ -55,17 +57,22 @@ export class StripeController {
               expand: ['line_items'],
             }
           );
-          const payload: CreatePaymentDto = {
-            paymentIntentId: sessionWithLineItems.payment_intent,
-            amount: sessionWithLineItems.amount_total,
-            method: sessionWithLineItems.payment_method_types[0]
+          const productsId = []
+          sessionWithLineItems.line_items.data.forEach(async element => {
+            productsId.push((await this.productsService.findOne({ stripeId: element.price.product })).id)
+          });
+          const order: CreateOrderDto = {
+            userId: await this.usersService.findOne({ id: 1 }),
+            productsId: productsId,
+            paymentId: await this.paymentsService.findOne({ paymentIntentId: sessionWithLineItems.payment_intent }),
+            status: 'paid'
           }
-
-          await this.paymentsService.create(payload)
+          await this.ordersService.create(order)
         }
-        // case 'checkout.session.async_payment_failed':
-        //   const checkoutSessionAsyncPaymentFailed = event.data.object}
         break;
+      // case 'checkout.session.async_payment_failed':
+      //   const checkoutSessionAsyncPaymentFailed = event.data.object}
+      // break;
       //   console.log(checkoutSessionAsyncPaymentFailed);
       //   // Then define and call a function to handle the event checkout.session.async_payment_failed
       //   break;
@@ -76,7 +83,10 @@ export class StripeController {
           amount: paymentIntentSucceeded.amount,
           method: paymentIntentSucceeded.payment_method_types[0]
         }
-        console.log(await this.paymentsService.create(payload))
+        await this.paymentsService.create(payload)
+        break;
+      case 'invoice.paid':
+        const invoicePaid = event.data.object
         break;
       // case 'checkout.session.expired':
       //   const checkoutSessionExpired = event.data.object;

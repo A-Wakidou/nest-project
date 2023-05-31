@@ -25,6 +25,11 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Post('/search')
+  findAllBy(query) {
+    return this.productsService.findAllBy(query);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.productsService.findOne({ id });

@@ -6,6 +6,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Products } from './entities/products.entity';
 import { Categories } from '../categories/entities/categories.entity';
 import { ProductsImages } from '../products_images/entities/products_images.entity';
+import { Like } from "typeorm"
 
 @Injectable()
 export class ProductsService {
@@ -42,8 +43,13 @@ export class ProductsService {
     return await this.productsRepository.save(product)
   }
 
+  
   async findAll(): Promise<Products[]> {
-    return await this.productsRepository.find();
+    return await this.productsRepository.find()
+  }
+
+  async findAllBy(query): Promise<Products[]> {
+    return await this.productsRepository.find({where:[{title:Like(query)}, {brand:Like(query)}]})
   }
 
   async findOne(id: object): Promise<Products> {

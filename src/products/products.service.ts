@@ -49,7 +49,7 @@ export class ProductsService {
   }
 
   async findAllBy(query): Promise<Products[]> {
-    return await this.productsRepository.find({where:[{title:Like(query)}, {brand:Like(query)}]})
+    return await this.productsRepository.find({where:[{title:Like('%'+query+'%')}, {brand:Like('%'+query+'%')}]})
   }
 
   async findOne(id: object): Promise<Products> {

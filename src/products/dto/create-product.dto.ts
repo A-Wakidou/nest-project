@@ -11,6 +11,8 @@ export class CreateProductDto {
     @ApiPropertyOptional()
     brand: string;
     @ApiPropertyOptional()
+    rating: number;
+    @ApiPropertyOptional()
     categories: [];
     @ApiPropertyOptional()
     description: string;

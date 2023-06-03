@@ -34,16 +34,24 @@ import { ProductsImagesModule } from './products_images/products_images.module';
 import { ProductsImagesController } from './products_images/products_images.controller';
 import { ProductsImagesService } from './products_images/products_images.service';
 import { ProductsImages } from './products_images/entities/products_images.entity';
+import { RatingsModule } from './ratings/ratings.module';
+import { CommentsModule } from './comments/comments.module';
+import { Ratings } from './ratings/entities/rating.entity';
+import { Comments } from './comments/entities/comment.entity';
+import { RatingsController } from './ratings/ratings.controller';
+import { RatingsService } from './ratings/ratings.service';
+import { CommentsService } from './comments/comments.service';
+import { CommentsController } from './comments/comments.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 10,
-    }),
+    // ThrottlerModule.forRoot({
+    //   ttl: 60,
+    //   limit: 10,
+    // }),
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -52,7 +60,7 @@ import { ProductsImages } from './products_images/entities/products_images.entit
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'nest-project',
-      entities: [Users, Products, ProductsImages, Orders, Payments, Categories],
+      entities: [Users, Products, ProductsImages, Orders, Payments, Categories, Ratings, Comments],
       synchronize: true,
     }),
     AuthModule,
@@ -62,12 +70,16 @@ import { ProductsImages } from './products_images/entities/products_images.entit
     CategoriesModule,
     StripeModule,
     ProductsImagesModule,
+    RatingsModule,
+    CommentsModule,
   ],
-  controllers: [AppController, UsersController, AuthController, ProductsController, ProductsImagesController, OrdersController, PaymentsController, CategoriesController],
-  providers: [AppService, UsersService, ProductsService, ProductsImagesService, OrdersService, PaymentsService, CategoriesService, {
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard,
-  },]
+  controllers: [AppController, UsersController, AuthController, ProductsController, ProductsImagesController, OrdersController, PaymentsController, CategoriesController, RatingsController, CommentsController],
+  providers: [AppService, UsersService, ProductsService, ProductsImagesService, OrdersService, PaymentsService, CategoriesService, RatingsService, CommentsService,
+  //  {
+  // provide: APP_GUARD,
+  // useClass: ThrottlerGuard,
+  // },
+  ]
 })
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {

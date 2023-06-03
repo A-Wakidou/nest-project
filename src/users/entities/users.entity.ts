@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Comments } from '../../comments/entities/comment.entity';
+import { Ratings } from '../../ratings/entities/rating.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Users {
@@ -25,6 +27,12 @@ export class Users {
 
     @Column()
     phoneNumber: string;
+
+    @OneToMany(() => Ratings, (rating) => rating.user, { eager: true, })
+    ratings: Ratings[]
+
+    @OneToMany(() => Comments, (comment) => comment.user, { eager: true, })
+    comments: Comments[]
 
     @CreateDateColumn()
     createdDate: Date

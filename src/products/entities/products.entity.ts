@@ -2,6 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Categories } from '../../categories/entities/categories.entity'
 import { Orders } from '../../orders/entities/orders.entity';
 import { ProductsImages } from '../../products_images/entities/products_images.entity';
+import { Ratings } from '../../ratings/entities/rating.entity';
+import { Comments } from '../../comments/entities/comment.entity';
 
 @Entity()
 export class Products {
@@ -16,6 +18,12 @@ export class Products {
 
     @OneToMany(() => ProductsImages, (productsImages) => productsImages.productId, { eager: true, })
     images: ProductsImages[]
+
+    @OneToMany( () => Ratings, (rating) => rating.product, { eager: true, })
+    ratings: Ratings[]
+
+    @OneToMany( () => Comments, (comment) => comment.product, { eager: true, })
+    comments: Comments[]
 
     @Column()
     brand: string;

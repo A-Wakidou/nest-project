@@ -10,7 +10,7 @@ export class ProductsImages {
     url: string
 
     @ManyToOne(() => Products, (products) => products.images)
-    productId: Products
+    product: Products
 
     @CreateDateColumn()
     createdDate: Date

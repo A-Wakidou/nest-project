@@ -15,7 +15,7 @@ export class ProductsImagesService {
   async create(payload: CreateProductsImagesDto): Promise<ProductsImages> {
     const productsImages = new ProductsImages
     productsImages.url = payload.url
-    productsImages.productId = payload.productId
+    productsImages.product = payload.productId
     return await this.productsImagesRepository.save(productsImages)
   }
 
@@ -30,7 +30,7 @@ export class ProductsImagesService {
   async update(id: number, payload: UpdateProductsImagesDto): Promise<ProductsImages> {
     const productsImagesToUpdate = await this.productsImagesRepository.findOneBy({ id })
     productsImagesToUpdate.url = payload.url
-    productsImagesToUpdate.productId = payload.productId
+    productsImagesToUpdate.product = payload.productId
     return await this.productsImagesRepository.save(productsImagesToUpdate)
   }
 

@@ -28,7 +28,7 @@ export class ProductsService {
       const image = new ProductsImages()
       image.url = element.url
       console.log(element);
-      image.productId = element.productId
+      image.product = element.product
       await this.productsImagesRepository.save(image)
         .then(() => {
           images.push(image)
@@ -64,7 +64,7 @@ export class ProductsService {
     payload.images.forEach(async (element) => {
       const image = new ProductsImages()
       image.url = element.url
-      image.productId = element.productId
+      image.product = element.product
       await this.productsImagesRepository.save(image)
         .then(() => {
           images.push(image)

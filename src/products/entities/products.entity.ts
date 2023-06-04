@@ -10,13 +10,13 @@ export class Products {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
-    stripeId: string;
-
     @Column()
     title: string;
 
-    @OneToMany(() => ProductsImages, (productsImages) => productsImages.productId, { eager: true, })
+    @Column({ unique: true })
+    stripeId: string;
+
+    @OneToMany(() => ProductsImages, (productsImages) => productsImages.product, { eager: true, })
     images: ProductsImages[]
 
     @OneToMany( () => Ratings, (rating) => rating.product, { eager: true, })

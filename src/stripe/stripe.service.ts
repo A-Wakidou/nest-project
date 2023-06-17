@@ -10,6 +10,7 @@ export class StripeService {
   async checkout(paymentCheckOutDto: PaymentCheckOutDto) {
     const stripeProducts = await this.findAllProducts()
     let line_items = []
+    console.log(paymentCheckOutDto)
     paymentCheckOutDto.forEach((dtoProduct) => {
       const product = { price: '', quantity: '' }
       product.price = stripeProducts.data.find((stripeProduct) => stripeProduct.name === dtoProduct.productName).default_price

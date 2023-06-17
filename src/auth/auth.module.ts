@@ -14,7 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: () => ({
         global: true,
         secret: process.env.JWT_TOKEN_SECRET,
-        signOptions: { expiresIn: '1h' },
+        signOptions: { expiresIn: '1d' },
       })
     }),
   ],

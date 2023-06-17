@@ -4,6 +4,7 @@ import { LocalAuthGuard } from './local-auth.guard'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto'
+import { CheckToken } from './dto/checkToken.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -17,7 +18,7 @@ export class AuthController {
     }
 
     @Post('check')
-    async checkToken(@Body() body:any) {
-        return this.authService.checkToken(body.token)
+    async checkToken(@Body() checkTokenDto: CheckToken) {
+        return this.authService.checkToken(checkTokenDto.token)
     }
 }

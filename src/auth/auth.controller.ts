@@ -17,7 +17,7 @@ export class AuthController {
     }
 
     @Post('check')
-    async checkToken(@Body() body:{token: string}) {
+    async checkToken(@Body() body:any) {
         return this.authService.checkToken(body.token)
     }
 }

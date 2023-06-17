@@ -23,10 +23,12 @@ export class AuthService {
     catch (error) { return error }
   }
 
-  async getAccessToken(user: any) {
-    const payload = { email: user.email };
+  async getAccessToken(loginDto: any) {
+    const payload = { email: loginDto.email };
+    const user = await this.usersService.findOne({ email: loginDto.email });
     return {
       access_token: this.jwtService.sign(payload),
+      user: user
     };
   }
 

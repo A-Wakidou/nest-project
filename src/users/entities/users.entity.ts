@@ -1,5 +1,6 @@
 import { Comments } from '../../comments/entities/comment.entity';
 import { Ratings } from '../../ratings/entities/rating.entity';
+import { Orders } from '../../orders/entities/orders.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
@@ -27,6 +28,9 @@ export class Users {
 
     @Column()
     phoneNumber: string;
+
+    @OneToMany(() => Orders, (order) => order.user, { eager: true, }) 
+    orders: Orders[]
 
     @OneToMany(() => Ratings, (rating) => rating.user, { eager: true, })
     ratings: Ratings[]

@@ -8,10 +8,10 @@ export class Orders {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne((type) => Users, (users) => users.id)
+    @ManyToOne(() => Users, (users) => users.id)
     user: Users
 
-    @ManyToMany((type) => Products, (products) => products.id, { eager: true })
+    @ManyToMany(() => Products, (products) => products.id, { eager: true })
     @JoinTable({ name: "orders_products" })
     products: Products[]
 

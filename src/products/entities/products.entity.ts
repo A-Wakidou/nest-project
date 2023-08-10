@@ -16,13 +16,13 @@ export class Products {
     // @Column({ unique: true })
     // stripeId: string;
 
-    @OneToMany(() => ProductsImages, (productsImages) => productsImages.product, { eager: true, })
+    @OneToMany(() => ProductsImages, (productsImages) => productsImages.product, { eager: true })
     images: ProductsImages[]
 
-    @OneToMany( () => Ratings, (rating) => rating.product, { eager: true, })
+    @OneToMany( () => Ratings, (rating) => rating.product, { eager: true })
     ratings: Ratings[]
 
-    @OneToMany( () => Comments, (comment) => comment.product, { eager: true, })
+    @OneToMany( () => Comments, (comment) => comment.product, { eager: true})
     comments: Comments[]
 
     @Column()

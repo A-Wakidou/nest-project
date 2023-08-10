@@ -35,7 +35,7 @@ export class Users {
     @OneToMany(() => Ratings, (rating) => rating.user, { eager: true, })
     ratings: Ratings[]
 
-    @OneToMany(() => Comments, (comment) => comment.user, { eager: true, })
+    @OneToMany(() => Comments, (comment) => comment.user)
     comments: Comments[]
 
     @CreateDateColumn()

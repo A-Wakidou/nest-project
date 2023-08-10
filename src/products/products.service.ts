@@ -56,7 +56,10 @@ export class ProductsService {
   async findAllByCategory(categoryId): Promise<Products[]> {
     return await this.productsRepository.find({
       relations: {
-        categories:true
+        categories:true,
+        comments: {
+          user: true
+        }
       },
       where: {
         categories: {
@@ -67,7 +70,14 @@ export class ProductsService {
   }
 
   async findOne(id: object): Promise<Products> {
-    return await this.productsRepository.findOneBy(id);
+    return await this.productsRepository.findOne({
+      relations: {
+        comments: {
+          user: true
+        }
+      },
+      where: id
+    });
   }
 
   async update(id: number, payload: UpdateProductDto): Promise<Products> {

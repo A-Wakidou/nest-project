@@ -26,7 +26,6 @@ export class StripeService {
       success_url: `${process.env.SERVER_HOST}/payments/payment_success`,
       cancel_url: `${process.env.SERVER_HOST}/payments/payment_cancel`,
     })
-    console.log(session.url)
     return { url: session.url }
   }
 

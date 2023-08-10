@@ -27,7 +27,12 @@ export class ProductsController {
 
   @Post('/search')
   findAllBy(@Body() body: {query: number|string}) {
-    return this.productsService.findAllBy(body.query);
+    return this.productsService.findAllBySearchQuery(body.query);
+  }
+
+  @Post('/search-by-category')
+  findAllByCategory(@Body() body: {category: number|string}) {
+    return this.productsService.findAllByCategory(body.category);
   }
 
   @Get(':id')

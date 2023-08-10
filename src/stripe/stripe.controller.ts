@@ -29,7 +29,7 @@ export class StripeController {
   })
   @UseGuards(JwtAuthGuard)
   @Post('checkout')
-  @Redirect('returned value', 303)
+  // @Redirect('returned value', 303)
   checkout(@Body() paymentCheckOutDto: PaymentCheckOutDto) {
     return this.stripeService.checkout(paymentCheckOutDto)
   }
@@ -58,6 +58,7 @@ export class StripeController {
             }
           );
           const productsId = []
+          // mettre l'id du produit = id stripe produit
           sessionWithLineItems.line_items.data.forEach(async element => {
             productsId.push((await this.productsService.findOne({ stripeId: element.price.product })).id)
           });

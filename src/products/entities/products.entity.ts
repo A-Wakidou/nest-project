@@ -13,8 +13,8 @@ export class Products {
     @Column()
     title: string;
 
-    @Column({ unique: true })
-    stripeId: string;
+    // @Column({ unique: true })
+    // stripeId: string;
 
     @OneToMany(() => ProductsImages, (productsImages) => productsImages.product, { eager: true, })
     images: ProductsImages[]
@@ -35,8 +35,11 @@ export class Products {
     @ManyToMany(() => Orders, (orders) => orders.products)
     order: Orders[]
 
-    @Column()
+    @Column({type: "text"})
     description: string;
+
+    @Column({type: "text"})
+    technicalDescription: string;
 
     @Column()
     price: number;

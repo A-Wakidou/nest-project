@@ -21,7 +21,7 @@ export class ProductsService {
 
   async create(payload: CreateProductDto): Promise<Products> {
     const product = new Products()
-    product.stripeId = payload.stripeId
+    // product.stripeId = payload.stripeId
     product.title = payload.title
     const images = []
     payload.images.forEach(async (element) => {
@@ -39,6 +39,7 @@ export class ProductsService {
     product.categories = await this.categoriesRepository.findBy({ id: In([payload.categories]) })
     product.price = payload.price
     product.description = payload.description
+    product.technicalDescription = payload.technicalDescription
     product.stock = payload.stock
     return await this.productsRepository.save(product)
   }
@@ -48,8 +49,21 @@ export class ProductsService {
     return await this.productsRepository.find()
   }
 
-  async findAllBy(query): Promise<Products[]> {
+  async findAllBySearchQuery(query): Promise<Products[]> {
     return await this.productsRepository.find({where:[{title:Like('%'+query+'%')}, {brand:Like('%'+query+'%')}]})
+  }
+
+  async findAllByCategory(categoryId): Promise<Products[]> {
+    return await this.productsRepository.find({
+      relations: {
+        categories:true
+      },
+      where: {
+        categories: {
+          id: categoryId
+        }
+      }
+    })
   }
 
   async findOne(id: object): Promise<Products> {
@@ -58,7 +72,7 @@ export class ProductsService {
 
   async update(id: number, payload: UpdateProductDto): Promise<Products> {
     const productToUpdate = await this.productsRepository.findOneBy({ id })
-    productToUpdate.stripeId = payload.stripeId
+    // productToUpdate.stripeId = payload.stripeId
     productToUpdate.title = payload.title
     const images = []
     payload.images.forEach(async (element) => {
@@ -75,6 +89,7 @@ export class ProductsService {
     productToUpdate.categories = payload.categories
     productToUpdate.price = payload.price
     productToUpdate.description = payload.description
+    productToUpdate.technicalDescription = payload.technicalDescription
     productToUpdate.stock = payload.stock
     return await this.productsRepository.save(productToUpdate)
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStripeProductDto } from './dto/create-stripe-product.dto';
+import { CreateStripePriceDto } from './dto/create-stripe-price.dto';
 import { UpdateStripeProductDto } from './dto/update-stripe-product.dto';
 import { PaymentCheckOutDto } from './dto/payment-checkout.dto';
 const stripe = require('stripe')('sk_test_51MvGYhD5txrJIMcUNsfwDPwqpMhDCsVkJpDcj8jy2Ou9txKmmjc9O4WBolgrquEAZo1WGzUFlKpTCqiUf5TR07hP00IENBZSTv');
@@ -51,4 +52,24 @@ export class StripeService {
   async removeProduct(id: string) {
     return await stripe.products.del(id);
   }
+
+  async createPrice(createStripePriceDto: CreateStripePriceDto): Promise<object> {
+    return await stripe.prices.create(createStripePriceDto);
+  }
+
+  async findAllPrices() {
+    return await stripe.prices.list();
+  }
+
+  async findOnePrice(id: number) {
+    return await stripe.prices.retrieve(id);
+  }
+
+  async updatePrice(id: number, updateStripeDto) {
+    return await stripe.price.update(
+      id,
+      updateStripeDto
+    );
+  }
+
 }

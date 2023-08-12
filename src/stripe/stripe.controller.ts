@@ -3,6 +3,7 @@ import { StripeService } from './stripe.service';
 import { PaymentsService } from '../payments/payments.service';
 import { OrdersService } from '../orders/orders.service';
 import { CreateStripeProductDto } from './dto/create-stripe-product.dto';
+import { CreateStripePriceDto } from './dto/create-stripe-price.dto';
 import { UpdateStripeProductDto } from './dto/update-stripe-product.dto';
 import { PaymentCheckOutDto } from './dto/payment-checkout.dto';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
@@ -35,7 +36,7 @@ export class StripeController {
   }
 
   @Post('webhook')
-  @Redirect(process.env.CLIENT_HOST + '/payment-success', 301)
+  // @Redirect(process.env.CLIENT_HOST + '/payment-success', 301)
   async paymentSuccess(@Body() payload, @Req() request: Request) {
     //   //TEST CARD : 4242424242424242
     const sig = request.headers['stripe-signature']
@@ -62,6 +63,7 @@ export class StripeController {
           sessionWithLineItems.line_items.data.forEach(async element => {
             productsId.push((await this.productsService.findOne({ stripeId: element.price.product })).id)
           });
+          console.log(productsId)
           const order: CreateOrderDto = {
             userId: await this.usersService.findOne({ id: 1 }),
             productsId: productsId,
@@ -98,6 +100,7 @@ export class StripeController {
       // default:
       //   console.log(`Unhandled event type ${event.type}`);
     }
+    return event.type
   }
 
   @ApiHeader({
@@ -149,4 +152,45 @@ export class StripeController {
   remove(@Param('id') id: string) {
     return this.stripeService.removeProduct(id);
   }
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT Token',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('prices')
+  findAllPrices() {
+    return this.stripeService.findAllPrices();
+  }
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT Token',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('prices/:id')
+  findOnePrice(@Param('id') id: number) {
+    return this.stripeService.findOnePrice(id);
+  }
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT Token',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('prices')
+  createPrice(@Body() createStripePriceDto: CreateStripePriceDto) {
+    return this.stripeService.createPrice(createStripePriceDto);
+  }
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT Token',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Patch('prices/:id')
+  updatePrice(@Param('id') id: number, @Body() updateStripePriceDto) {
+    return this.stripeService.updatePrice(id, updateStripePriceDto);
+  }
+
 }

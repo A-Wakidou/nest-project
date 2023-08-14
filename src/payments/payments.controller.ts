@@ -60,6 +60,12 @@ export class PaymentsController {
     return this.paymentsService.remove(id)
   }
 
+  @Get('payment-success')
+  @Redirect(process.env.CLIENT_HOST + '/payment-success', 301)
+  paymentSuccess() {
+    console.log('Payment succeded')
+  }
+
   @Get('payment-cancel')
   @Redirect(process.env.CLIENT_HOST + '/cart', 301)
   paymentCancel() {

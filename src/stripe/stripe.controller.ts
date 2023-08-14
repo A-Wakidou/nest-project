@@ -39,6 +39,7 @@ export class StripeController {
   // @Redirect(process.env.CLIENT_HOST + '/payment-success', 301)
   async paymentSuccess(@Body() payload, @Req() request: Request) {
     //   //TEST CARD : 4242424242424242
+    console.log('a')
     const sig = request.headers['stripe-signature']
     let event
     try {

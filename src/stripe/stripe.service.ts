@@ -24,8 +24,8 @@ export class StripeService {
         enabled: true,
       },
       mode: 'payment',
-      success_url: `${process.env.SERVER_HOST}/payments/payment_success`,
-      cancel_url: `${process.env.SERVER_HOST}/payments/payment_cancel`,
+      success_url: `${process.env.SERVER_HOST}/payments/payment-success`,
+      cancel_url: `${process.env.SERVER_HOST}/payments/payment-cancel`,
     })
     return { url: session.url }
   }
